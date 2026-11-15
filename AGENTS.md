@@ -1,37 +1,39 @@
 # Agent Instructions for this Zotero plugin template
 
-These rules apply to work in this repository and to every plugin seeded from it.
-The global `AGENTS.md` rule "Windows command-line safety" also applies and must
-not be weakened here.
+## Task scope and validation
 
-## Windows command-line safety
+- Cache exact applicable instructions once per checkout/task; read referenced
+  guides only for the area being changed. Restore only missing/changed sections
+  after compaction. Do not recursively load the commons documentation hierarchy.
+- Docs/instructions-only: inspect text/diff and any declared Markdown/render check;
+  do not run application tests/builds/browser suites, install packages, rebuild
+  artifacts or check other consumers. This qualifies completion gates below.
+- Commit/push-only: reuse green checks and verified artifacts for unchanged source,
+  dependencies/build inputs AND linked commons source. Validate previously unchecked
+  pending code once; report reuse honestly, not as a freshly run check.
+- Code changes: targeted tests during iteration, required final checks once after
+  the last relevant edit. Reuse composite build steps; do not rerun included lint,
+  types/tests/bundling. Verify that output, never rebuild just for a fresh timestamp.
+- Batch independent reads/status probes. Keep branch/identity/message/hook and
+  final remote-tip checks; do not repeat full exploration between Git steps.
 
-- **Always run terminal commands in Git Bash, never PowerShell.** The terminal
-  tool may default to PowerShell; never accept it. Wrap commands as
-  `& "C:\Program Files\Git\bin\bash.exe" -lc "<command>"` or set the tool shell
-  to Git Bash. Never use bare `bash` on Windows (it may resolve to WSL).
-- **Resolve a POSIX shell in order:** Git Bash
-  (`C:\Program Files\Git\bin\bash.exe`, then
-  `C:\Program Files\Git\usr\bin\bash.exe`), MSYS2
-  (`C:\tools\msys64\usr\bin\bash.exe`), Cygwin, then WSL only when
-  `wsl.exe -l -q` lists a distribution. Probe each with `-lc 'echo ok'`.
-  If you use a fallback, say so once. If none works, stop and ask the user to
-  install Git for Windows; do not run the command in PowerShell.
-- **Never use PowerShell-only tokens:** `Get-ChildItem`, `Get-Content`,
-  `Set-Content`, `Add-Content`, `Out-File`, `Remove-Item`, `Test-Path`,
-  `New-Item`, `Copy-Item`, `Move-Item`, `Select-String`, `Select-Object`,
-  `Where-Object`, `ForEach-Object`, `Write-Output`, `Write-Host`,
-  `Start-Process`, `Invoke-*`, `$env:`, `$LASTEXITCODE`, `if ($?)`, backticks
-  as escapes, and `.ps1` scripts. Use `ls`, `cat`, `printf`, `grep`, `sed`,
-  `awk`, `find`, `test`, `rm`, `$?`, and `&&`/`||` instead.
-- **Use Node.js scripts or the agent's file tools for edits.** Do not add
-  PowerShell scripts, tasks, or documentation for agent workflows; prefer npm
-  scripts and Bash.
+## Shell and Git safety
+
+Follow the global shell/Git rules when available. Otherwise detect and reuse Git
+Bash on Windows; never use bare bash (may be WSL), PowerShell cmdlets/scripts,
+redirection, backtick escapes or .ps1. Use native file tools/Node and quoted CLI
+path arguments. Stop if no authorized working POSIX shell exists.
+Keep existing Git identities, hooks/signing and line-ending policy; never add AI
+attribution, force-push or rewrite history without authorization. Inspect the
+literal message and use a quoted Bash heredoc with git commit -F, then clean up.
+Use an imperative subject <=72 characters, blank line, one-line overview and
+distinct material-change bullets, each on one physical line (no hard wrapping).
 
 ## Build and validation
 
-- Use the repository's npm scripts: `npm run build`, `npm run lint:check`, and
-  `npm run test`. They are shell-agnostic and must be run from Git Bash on
-  Windows.
-- Write commit messages with a file or a Bash heredoc and pass them with
-  `git commit -F <file>`; never use PowerShell redirection.
+Changed plugin source/build inputs require npm run build, npm run lint:check and
+the relevant npm run test checks, once from the original checkout. Inspect script
+composition first; do not rerun included type/build steps or reinstall unchanged
+dependencies. Runtime package verification applies only when affected.
+Markdown-only edits use the existing Prettier check for changed Markdown files,
+not Zotero application builds/tests. A seeded plugin inherits these scoped rules.
