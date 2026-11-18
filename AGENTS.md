@@ -31,9 +31,12 @@ distinct material-change bullets, each on one physical line (no hard wrapping).
 
 ## Build and validation
 
-Changed plugin source/build inputs require npm run build, npm run lint:check and
-the relevant npm run test checks, once from the original checkout. Inspect script
-composition first; do not rerun included type/build steps or reinstall unchanged
-dependencies. Runtime package verification applies only when affected.
+Use the standardized script contract: `npm run build` runs `check` (lint plus
+typecheck) and the production `bundle`. Keep the real Zotero startup test as
+`npm run test:integration`; `npm test` aliases that integration gate. Run it
+once when Zotero is available and report "not run: Zotero unavailable" rather
+than pretending build covered it. Inspect script composition first; do not rerun
+included type/build steps or reinstall unchanged dependencies. Runtime package
+verification applies only when affected.
 Markdown-only edits use the existing Prettier check for changed Markdown files,
 not Zotero application builds/tests. A seeded plugin inherits these scoped rules.
